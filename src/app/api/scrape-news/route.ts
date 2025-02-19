@@ -12,6 +12,7 @@ interface NewsSource {
   titleSelector: string;
   linkSelector: string;
   imageSelector: string;
+  dateSelector?: string;
 }
 
 interface Article {
@@ -34,7 +35,7 @@ const sources: NewsSource[] = [
   { name: "RSE Magazine", url: "https://www.rse-magazine.com/rse/", articleSelector: ".post", titleSelector: ".post-title", linkSelector: "a", imageSelector: ".post-image img" },
   { name: "Agence Déclic", url: "https://www.agence-declic.fr/categories/actualite-article-rse/", articleSelector: ".news-item", titleSelector: "h3", linkSelector: "a", imageSelector: "img" },
   { name: "RSE Data News", url: "https://www.rsedatanews.net/", articleSelector: ".news-item", titleSelector: ".news-title", linkSelector: "a", imageSelector: "img" },
-  { name: "Innovation24", url: "https://www.innovation24.news/category/rse/", articleSelector: ".post", titleSelector: ".entry-title", linkSelector: "a", imageSelector: "img" },
+  { name: "Innovation24", url: "https://www.innovation24.news/category/rse/", articleSelector: ".post", titleSelector: ".entry-title", linkSelector: "a", imageSelector: "img", dateSelector: ".meta-item herald-date" },
   { name: "RSE Web", url: "https://www.rse-web.it/en/news/", articleSelector: ".post", titleSelector: ".post-title", linkSelector: "a", imageSelector: ".post-image img" },
   { name: "Ross Engineering", url: "https://www.ross-eng.com/news/", articleSelector: ".news-item", titleSelector: ".news-title", linkSelector: "a", imageSelector: "img" }
 ];

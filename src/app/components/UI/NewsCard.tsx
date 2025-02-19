@@ -1,25 +1,41 @@
-// src/components/ui/NewsCard.tsx
+import Image from 'next/image';
+
 interface NewsCardProps {
-    image: string;
-    title: string;
-    category: string;
-  }
-  
-  const NewsCard = ({ image, title }: NewsCardProps) => {
-    return (
-      <div className="group cursor-pointer">
-        <div className="relative overflow-hidden rounded-lg mb-4">
-          <img
-            src={image}
-            alt={title}
-            className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
-          />
-        </div>
-        <h3 className="text-gray-800 font-medium leading-snug mb-2 group-hover:text-purple-600">
+  image: string;
+  title: string;
+  source: string;
+  date: string;
+}
+
+const NewsCard = ({ image, title, source, date }: NewsCardProps) => {
+  return (
+    <div className="group cursor-pointer border rounded-lg p-4 shadow-sm hover:shadow-md transition">
+      {/* Image */}
+      <div className="relative overflow-hidden rounded-lg mb-4">
+        <Image
+          src={image}
+          alt={title}
+          width={400} 
+          height={192} 
+          className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+          priority // Charge en priorité (utile pour les images visibles au chargement)
+        />
+      </div>
+
+      <div className="space-y-2">
+        {/* Source */}
+        <p className="text-blue-600 text-sm font-semibold">{source}</p>
+
+        {/* Title */}
+        <h3 className="text-gray-800 font-medium leading-snug group-hover:text-purple-600">
           {title}
         </h3>
+
+        {/* Date */}
+        <p className="text-gray-500 text-xs">{date}</p>
       </div>
-    );
-  };
-  
-  export default NewsCard;
+    </div>
+  );
+};
+
+export default NewsCard;

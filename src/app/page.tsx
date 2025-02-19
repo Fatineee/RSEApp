@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { useState, useEffect, useRef } from 'react';
 import Navbar from './components/UI/navbar';
@@ -9,7 +9,8 @@ import Footer from './components/UI/footer';
 interface Article {
   image?: string;
   title: string;
-  category: string;
+  source: string;  // ✅ Added source
+  date: string;    // ✅ Added date
   link: string;
 }
 
@@ -77,7 +78,8 @@ export default function NewsPage() {
                 <NewsCard
                   image={article.image || 'https://via.placeholder.com/400'}
                   title={article.title}
-                  category={article.category || 'General'}
+                  source={article.source || 'Unknown'}  // ✅ Pass source
+                  date={article.date || 'N/A'}         // ✅ Pass date
                 />
               </a>
             ))}

@@ -16,8 +16,8 @@ const Navbar = () => {
           <Image
             src="/images/logo_hosmony.png"
             alt="RSE News Logo"
-            width={50}
-            height={50}
+            width={70}
+            height={70}
             className="h-10 w-auto"
           />
         </Link>
