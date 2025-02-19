@@ -33,7 +33,7 @@ const Hero = ({ onExplore }: { onExplore: () => void }) => {
       <div className="absolute inset-0 bg-black/50"></div>
 
       {/* Content aligned to left */}
-      <div className="relative z-10 text-left text-white max-w-2xl">
+      <div className="relative z-10 text-left text-white max-w-2xl -z-[10]">
         <h1 className="text-5xl font-bold mb-6">
           RSE : tous les articles présents sur le site
         </h1>

@@ -9,7 +9,7 @@ const Navbar = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   return (
-    <nav className="fixed w-full top-0 bg-white shadow-md z-10">
+    <nav className="fixed w-full top-0 bg-white shadow-md z-[100]">
       <div className="container mx-auto flex items-center justify-between py-4 px-6">
         {/* Logo on the Left */}
         <Link href="/">
