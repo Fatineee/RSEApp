@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Super Atlas",
-  description: "RSE website",
+  description: "RSE Super Atlas — RSE website with the latest news and insights",
 };
 
 export default function RootLayout({

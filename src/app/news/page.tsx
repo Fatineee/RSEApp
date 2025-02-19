@@ -47,7 +47,7 @@ export default function NewsPage() {
     return (
       <div className="min-h-screen flex justify-center items-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold mb-4">Loading RSE news...</h2>
+        <h2 className="text-2xl font-bold mb-4">Loading Super Atlas news...</h2>
           <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent"></div>
         </div>
       </div>
@@ -58,7 +58,7 @@ export default function NewsPage() {
     return (
       <div className="min-h-screen flex justify-center items-center">
         <div className="bg-red-50 border-l-4 border-red-500 p-4 max-w-2xl">
-          <h2 className="text-xl font-medium text-red-700">Error loading news</h2>
+        <h2 className="text-xl font-medium text-red-700">Error loading Super Atlas news</h2>
           <p className="text-red-600 mt-2">{error}</p>
           <button 
             onClick={() => window.location.reload()}
@@ -73,7 +73,7 @@ export default function NewsPage() {
   
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Latest RSE News</h1>
+      <h1 className="text-3xl font-bold mb-8">Latest Super Atlas RSE News</h1>
       
       {articles.length === 0 ? (
         <p className="text-lg text-gray-600">No articles found. Please try again later.</p>
