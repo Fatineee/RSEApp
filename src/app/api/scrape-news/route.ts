@@ -24,20 +24,15 @@ interface Article {
 }
 
 const sources: NewsSource[] = [
-  { name: "Ouest France", url: "https://www.ouest-france.fr/economie/entreprises/rse/", articleSelector: ".article", titleSelector: "h2", linkSelector: "a", imageSelector: "img" },
   { name: "Carenews", url: "https://www.carenews.com/rse", articleSelector: ".article", titleSelector: "h2", linkSelector: "a", imageSelector: "img" },
-  { name: "Novethic", url: "https://www.novethic.fr/", articleSelector: ".article-item", titleSelector: ".article-title", linkSelector: ".article-link", imageSelector: ".article-image img" },
-  { name: "Mediatico", url: "https://mediatico.fr/category/actualite/", articleSelector: ".post", titleSelector: ".entry-title", linkSelector: "a", imageSelector: ".post-thumbnail img" },
-  { name: "Green IT", url: "https://www.greenit.fr/", articleSelector: ".news-item", titleSelector: ".news-title", linkSelector: "a", imageSelector: "img" },
-  { name: "L'Info Durable", url: "https://www.linfodurable.fr/aujourdhui/actualites", articleSelector: ".news-item", titleSelector: ".news-title", linkSelector: "a", imageSelector: "img" },
-  { name: "YouMatter", url: "https://youmatter.world/fr/tous-les-articles/", articleSelector: ".post", titleSelector: "h2", linkSelector: "a", imageSelector: "img" },
-  { name: "Reporterre", url: "https://reporterre.net/Toute-l-information", articleSelector: ".news-item", titleSelector: "h3", linkSelector: "a", imageSelector: "img" },
-  { name: "RSE Magazine", url: "https://www.rse-magazine.com/rse/", articleSelector: ".post", titleSelector: ".post-title", linkSelector: "a", imageSelector: ".post-image img" },
-  { name: "Agence Déclic", url: "https://www.agence-declic.fr/categories/actualite-article-rse/", articleSelector: ".news-item", titleSelector: "h3", linkSelector: "a", imageSelector: "img" },
-  { name: "RSE Data News", url: "https://www.rsedatanews.net/", articleSelector: ".news-item", titleSelector: ".news-title", linkSelector: "a", imageSelector: "img" },
-  { name: "Innovation24", url: "https://www.innovation24.news/category/rse/", articleSelector: ".post", titleSelector: ".entry-title", linkSelector: "a", imageSelector: "img", dateSelector: ".meta-item herald-date" },
-  { name: "RSE Web", url: "https://www.rse-web.it/en/news/", articleSelector: ".post", titleSelector: ".post-title", linkSelector: "a", imageSelector: ".post-image img" },
-  { name: "Ross Engineering", url: "https://www.ross-eng.com/news/", articleSelector: ".news-item", titleSelector: ".news-title", linkSelector: "a", imageSelector: "img" }
+  { name: "Mediatico", url: "https://mediatico.fr/category/actualite/", articleSelector: ".post-list-archive__post__hero", titleSelector: "h4", linkSelector: "a", imageSelector: "img"},
+  { name: "Green IT", url: "https://www.greenit.fr/", articleSelector: "article", titleSelector: ".h2", linkSelector: "a", imageSelector: "img" },
+  { name: "L'Info Durable", url: "https://www.linfodurable.fr/aujourdhui/actualites", articleSelector: "article", titleSelector: "h2", linkSelector: "a", imageSelector: "img", dateSelector:"time.fs-14.color-grey-semidark" },
+  // { name: "RSE Magazine", url: "https://www.rse-magazine.com/rse/", articleSelector: ".gb-container-2249c583", titleSelector: ".loop-title a", linkSelector: ".loop-title a", imageSelector: ".gb-block-image img", dateSelector:".entry-date" },
+  { name: "Agence Déclic", url: "https://www.agence-declic.fr/categories/actualite-article-rse/", articleSelector: ".c-actualites__item", titleSelector: ".c-actualites__itemtitle", linkSelector: "a", imageSelector: "img", dateSelector:"span.c-actualites__itemdate" },
+  { name: "Innovation24", url: "https://www.innovation24.news/category/rse/", articleSelector: ".post", titleSelector: ".entry-title", linkSelector: "a", imageSelector: "img", dateSelector: ".updated" },
+  // { name: "RSE Web", url: "https://www.rse-web.it/en/news/", articleSelector: ".project-box", titleSelector: ".project-title", linkSelector: "a", imageSelector: ".project-box .news-featured-img img", dateSelector:".project-date" },
+  { name: "Ross Engineering", url: "https://www.ross-eng.com/news/", articleSelector: "article", titleSelector: "h2", linkSelector: "a", imageSelector: "img", dateSelector:".b-card__top--left" }
 ];
 
 
@@ -72,38 +67,64 @@ async function scrapeWebsite(site: NewsSource): Promise<{source: string; article
     const articles: Article[] = [];
 
     $(site.articleSelector).each((index, element) => {
-      // Try different selector combinations if the primary ones don't work
       const title = $(element).find(site.titleSelector).text().trim() || 
                    $(element).find('h2, h3, .title').text().trim();
       
       let link = $(element).find(site.linkSelector).attr("href") || 
                 $(element).find('a').attr("href");
       
-      let image = $(element).find(site.imageSelector).attr("src") || 
-                 $(element).find(site.imageSelector).attr("data-src") ||
-                 $(element).find('img').attr("src") ||
-                 $(element).find('img').attr("data-src");
+      // Enhanced image extraction
+      let image = undefined;
+      const imgElement = $(element).find(site.imageSelector).first();
+      
+      // Try multiple attributes for image URL
+      image = imgElement.attr("src") || 
+              imgElement.attr("data-src") || 
+              imgElement.attr("data-lazy-src") ||
+              imgElement.parent().attr("data-bg") || // Some sites use background images
+              imgElement.css("background-image")?.replace(/^url\(['"](.+)['"]\)/, '$1');
 
-      // Extract date if available
-      const date = $(element).find('.date, .post-date, .article-date, time').text().trim() || 
-                $(element).find('[datetime]').attr('datetime');
+      // Handle lazy loading images
+      if (!image) {
+        const dataSrcset = imgElement.attr("data-srcset");
+        if (dataSrcset) {
+          // Get the first image from srcset
+          image = dataSrcset.split(',')[0].split(' ')[0];
+        }
+      }
 
-      // Convert relative links to absolute
+      const date = $(element).find(site.dateSelector || '.date, .post-date, .article-date, time').text().trim() || 
+                  $(element).find('[datetime]').attr('datetime');
+
+      // URL normalization
       if (link && !link.startsWith("http")) {
         try {
           link = new URL(link, site.url).href;
         } catch (e) {
-          console.warn(`❗ Could not parse URL: ${link} from ${site.name} error: ${e}`);
-          return; // Skip this article
+          console.warn(`❗ Could not parse URL: ${link} from ${site.name} error :${e} `);
+          return;
         }
       }
       
       if (image && !image.startsWith("http")) {
         try {
-          image = new URL(image, site.url).href;
+          // Remove any leading '//' from image path
+          image = image.replace(/^\/\//, 'https://');
+          if (!image.match(/^https?:\/\//)) {
+            image = new URL(image, site.url).href;
+          }
         } catch (e) {
-          // Just log warning, missing image is not a reason to skip
-          console.warn(`❗ Could not parse image URL: ${image} from ${site.name} error: ${e}`);
+          console.warn(`❗ Could not parse image URL: ${image} from ${site.name} error :${e}`);
+          image = undefined;
+        }
+      }
+
+      // Validate image URL
+      if (image) {
+        try {
+          new URL(image);
+        } catch (e) {
+          console.warn(`❗ Invalid image URL: ${image} from ${site.name} error :${e}`);
           image = undefined;
         }
       }
@@ -111,7 +132,7 @@ async function scrapeWebsite(site: NewsSource): Promise<{source: string; article
       if (title && link) {
         articles.push({ 
           source: site.name, 
-          title: title.replace(/\s+/g, ' '), // Normalize whitespace
+          title: title.replace(/\s+/g, ' '),
           link, 
           image,
           date 

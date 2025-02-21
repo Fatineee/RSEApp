@@ -18,7 +18,7 @@ const NewsCard = ({ image, title, source, date }: NewsCardProps) => {
           width={400} 
           height={192} 
           className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
-          priority // Charge en priorité (utile pour les images visibles au chargement)
+          loading="lazy" 
         />
       </div>
 
