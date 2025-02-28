@@ -28,10 +28,8 @@ const sources: NewsSource[] = [
   { name: "Mediatico", url: "https://mediatico.fr/category/actualite/", articleSelector: ".post-list-archive__post__hero", titleSelector: "h4", linkSelector: "a", imageSelector: "img"},
   { name: "Green IT", url: "https://www.greenit.fr/", articleSelector: "article", titleSelector: ".h2", linkSelector: "a", imageSelector: "img" },
   { name: "L'Info Durable", url: "https://www.linfodurable.fr/aujourdhui/actualites", articleSelector: "article", titleSelector: "h2", linkSelector: "a", imageSelector: "img", dateSelector:"time.fs-14.color-grey-semidark" },
-  // { name: "RSE Magazine", url: "https://www.rse-magazine.com/rse/", articleSelector: ".gb-container-2249c583", titleSelector: ".loop-title a", linkSelector: ".loop-title a", imageSelector: ".gb-block-image img", dateSelector:".entry-date" },
   { name: "Agence Déclic", url: "https://www.agence-declic.fr/categories/actualite-article-rse/", articleSelector: ".c-actualites__item", titleSelector: ".c-actualites__itemtitle", linkSelector: "a", imageSelector: "img", dateSelector:"span.c-actualites__itemdate" },
   { name: "Innovation24", url: "https://www.innovation24.news/category/rse/", articleSelector: ".post", titleSelector: ".entry-title", linkSelector: "a", imageSelector: "img", dateSelector: ".updated" },
-  // { name: "RSE Web", url: "https://www.rse-web.it/en/news/", articleSelector: ".project-box", titleSelector: ".project-title", linkSelector: "a", imageSelector: ".project-box .news-featured-img img", dateSelector:".project-date" },
   { name: "Ross Engineering", url: "https://www.ross-eng.com/news/", articleSelector: "article", titleSelector: "h2", linkSelector: "a", imageSelector: "img", dateSelector:".b-card__top--left" }
 ];
 
