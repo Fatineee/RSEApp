@@ -19,3 +19,12 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+.pb-dashboard {
+  padding-bottom: 75%; /* Adjust based on your desired aspect ratio */
+}
+
+@media (min-width: 768px) {
+  .pb-dashboard {
+    padding-bottom: 56.25%; /* 16:9 aspect ratio for larger screens */
+  }
+}

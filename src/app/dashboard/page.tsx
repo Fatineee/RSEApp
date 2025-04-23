@@ -1,35 +1,29 @@
 'use client'
+
 import React from 'react'
+import Navbar from '@/app/components/UI/navbar'
 
 export default function DashboardPage() {
-    return (
-      <div style={{ padding: '2rem' }}>
-          <h1
-        style={{
-          textAlign: 'center',
-          fontWeight: '700',     // ou 'bold'
-          color: '#D32F2F',      // ton rouge Perpignan
-          fontSize: '2rem',
-          marginBottom: '1.5rem'
-        }}
-      >
-        Ancrage Territorial : Dashboard Économique de Perpignan
-      </h1>
-  
-        <div style={{ position: 'relative', width: '100%', paddingTop: '56.25%' }}>
-          <iframe
-            src="https://ancrage-territorial-dash.streamlit.app/?embed=true"
-            style={{
-              position: 'absolute',
-              top: 0, left: 0,
-              width: '100%', height: '100%',
-              border: '1px solid #ddd',
-              borderRadius: '8px',
-            }}
-            allowFullScreen
-            title="Streamlit Dashboard"
-          />
+  return (
+    <div className="min-h-screen flex flex-col">
+      {/* Navbar */}
+      <Navbar />
+      
+      <main className="flex-grow container mx-auto px-4 py-8">
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <div className="mb-6">
+            {/* Dashboard iframe */}
+            <div className="bg-gray-100 p-4 rounded-lg min-h-64">
+            <iframe
+                src="https://ancrage-territorial-dash.streamlit.app/?embed=true"
+                className="absolute top-0 left-0 w-full h-full rounded-md border border-gray-200"
+                allowFullScreen
+                title="Streamlit Dashboard"
+              />
+            </div>
+          </div>
         </div>
-      </div>
-    )
-  }
+      </main>
+    </div>
+  )
+}
