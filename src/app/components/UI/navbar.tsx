@@ -27,7 +27,7 @@ const Navbar = () => {
           <Link href="/" className="text-gray-700 hover:text-green-600">Home</Link>
           <Link href="/about" className="text-gray-700 hover:text-green-600">About Us</Link>
           <Link href="/contact" className="text-gray-700 hover:text-green-600">Contact Us</Link>
-          <Link href="/dashboard" className="text-gray-700 hover:text-green-600">Dashboard</Link>
+          <Link href="/dashboard" className="text-gray-700 hover:text-green-600">RSE & Territory</Link>
 
           {/* Search Bar */}
           {isSearchOpen ? (
