@@ -2,7 +2,11 @@
 import { NextResponse } from 'next/server';
 import axios from 'axios';
 import * as cheerio from 'cheerio';
-export const revalidate = 3600;
+
+// Désactive complètement le cache statique de Next.js sur cette route.
+// Chaque requête déclenchera un nouveau scraping (SSR dynamique).
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 // Define source types
 interface NewsSource {
@@ -175,17 +179,36 @@ export async function GET() {
       new Map(allArticles.map(article => [article.link, article])).values()
     );
     
-    return NextResponse.json({
-      success: true,
-      count: uniqueArticles.length,
-      articles: uniqueArticles
-    }, { status: 200 });
+    // Headers no-store : empêche tout cache (Next.js, CDN, navigateur)
+    return NextResponse.json(
+      {
+        success: true,
+        count: uniqueArticles.length,
+        articles: uniqueArticles,
+      },
+      {
+        status: 200,
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0',
+        },
+      }
+    );
   } catch (error) {
     console.error('🔥 Global error:', error instanceof Error ? error.message : String(error));
-    return NextResponse.json({ 
-      success: false, 
-      error: error instanceof Error ? error.message : 'Unknown error occurred',
-      articles: []
-    }, { status: 500 });
+    return NextResponse.json(
+      {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error occurred',
+        articles: [],
+      },
+      {
+        status: 500,
+        headers: {
+          'Cache-Control': 'no-store',
+        },
+      }
+    );
   }
 }
